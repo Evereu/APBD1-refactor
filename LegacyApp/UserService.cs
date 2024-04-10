@@ -26,19 +26,22 @@ namespace LegacyApp
         
         public bool AddUser(string firstName, string lastName, string email, DateTime dateOfBirth, int clientId)
         {
-            bool addResult;
+
+            if (ValidateUserInputData(firstName, lastName, email) == false)
+                return false;
             
-            addResult = ValidateUserInputData(firstName, lastName, email);
-            
-            addResult = CheckUserAge(dateOfBirth);
+            if (CheckUserAge(dateOfBirth) == false)
+                return false;
             
             var user = CreateNewUser(firstName, lastName, email, dateOfBirth, clientId);
             
-            addResult = CheckUserCreditLimit(user);
+
+            if (CheckUserCreditLimit(user) == false)
+                return false;
             
             AddUser(user);
 
-            return addResult;
+            return true;
         }   
 
         private void AddUser(User user)
